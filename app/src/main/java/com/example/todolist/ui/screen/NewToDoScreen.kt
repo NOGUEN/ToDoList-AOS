@@ -2,7 +2,6 @@ package com.example.todolist.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,22 +12,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.todolist.model.ToDo
 import com.example.todolist.ui.theme.ToDoListTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoInfoScreen(
+fun NewToDoScreen(
     navController: NavHostController,
-    toDo: ToDo,
 ) {
     ToDoListTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = toDo.title) },
+                    title = { Text(text = "NewToDoList") },
                     navigationIcon = {
                         Box(modifier = Modifier.clickable {
                             navController.popBackStack()
@@ -42,15 +38,7 @@ fun ToDoInfoScreen(
             },
             content = {
                 Box(modifier = Modifier.padding(it)) {
-                    Column(modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                    ) {
-
-                        Text(text = toDo.description)
-                        Text(text = toDo.status)
-                        Text(text = "${toDo.duration}")
-                        Text(text = "${toDo.dueDate}")
-                    }
+                    Text(text = "hello")
                 }
             }
         )
