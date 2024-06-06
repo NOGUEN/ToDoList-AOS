@@ -1,6 +1,7 @@
 package com.example.todolist.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.todolist.model.ToDoScreen
 
 @Composable
 fun ToDoListCell(
@@ -21,18 +24,27 @@ fun ToDoListCell(
     backgroundColor: Color = Color.White,
     titleText: String,
     status: String,
+    navController: NavController,
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, shape = RoundedCornerShape(cornerRadius))
-            .background(backgroundColor)
+            .padding(top = 10.dp)
+            .clickable {
+                navController.navigate(ToDoScreen.ToDoInfo.name)
+            }
     ) {
-        Column(
-            Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(4.dp, shape = RoundedCornerShape(cornerRadius))
+                .background(backgroundColor)
         ) {
-            Text(text = titleText, fontSize = 16.sp)
-            Text(text = status, fontSize = 14.sp)
+            Column(
+                Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+            ) {
+                Text(text = titleText, fontSize = 16.sp)
+                Text(text = status, fontSize = 14.sp)
+            }
         }
     }
 }
