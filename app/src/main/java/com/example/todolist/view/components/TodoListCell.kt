@@ -18,15 +18,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.todolist.model.ToDo
+import com.example.todolist.model.Todo
 import com.example.todolist.model.enums.Status
-import com.example.todolist.model.enums.ToDoScreen
+import com.example.todolist.model.enums.TodoScreen
 
 @Composable
-fun ToDoListCell(
+fun TodoListCell(
     cornerRadius: Dp = 12.dp,
     backgroundColor: Color = Color.White,
-    toDo: ToDo,
+    toDo: Todo,
     navController: NavController,
 ) {
     Box(
@@ -34,7 +34,7 @@ fun ToDoListCell(
             .padding(top = 10.dp)
             .clickable {
                 navController.navigate(
-                    "${ToDoScreen.ToDoInfo.name}/${toDo.title}/${toDo.description}/${toDo.dueDate}/${toDo.duration}/${toDo.status}"
+                    "${TodoScreen.TodoInfo.name}/${toDo.title}/${toDo.description}/${toDo.dueDate}/${toDo.duration}/${toDo.status}"
                 )
             }
     ) {

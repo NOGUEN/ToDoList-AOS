@@ -15,12 +15,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.example.todolist.model.enums.ToDoScreen
-import com.example.todolist.view.components.ToDoListView
+import com.example.todolist.model.enums.TodoScreen
+import com.example.todolist.view.components.TodoListView
 import com.example.todolist.view.theme.ToDoListTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoListScreen(
+fun TodoListScreen(
     navController: NavHostController,
 ) {
     ToDoListTheme {
@@ -32,12 +33,12 @@ fun ToDoListScreen(
             },
             content = {
                 Box(modifier = Modifier.padding(it)) {
-                    ToDoListView(navController)
+                    TodoListView(navController)
                 }
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                    navController.navigate(ToDoScreen.NewToDo.name)
+                    navController.navigate(TodoScreen.NewTodo.name)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Add,

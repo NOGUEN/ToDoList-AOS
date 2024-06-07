@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.todolist.model.ToDo
+import com.example.todolist.model.Todo
 import com.example.todolist.view.theme.ToDoListTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoInfoScreen(
+fun TodoInfoScreen(
     navController: NavHostController,
-    toDo: ToDo,
+    toDo: Todo,
 ) {
     ToDoListTheme {
         Scaffold(
