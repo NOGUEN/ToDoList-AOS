@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.todolist.model.ToDo
 import com.example.todolist.model.enums.ToDoScreen
-import com.example.todolist.ui.screen.NewToDoScreen
-import com.example.todolist.ui.screen.ToDoInfoScreen
-import com.example.todolist.ui.screen.ToDoListScreen
+import com.example.todolist.view.screen.NewToDoScreen
+import com.example.todolist.view.screen.ToDoInfoScreen
+import com.example.todolist.view.screen.ToDoListScreen
 import java.util.Date
 
 @Composable

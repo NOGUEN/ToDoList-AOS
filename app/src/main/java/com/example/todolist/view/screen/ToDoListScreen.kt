@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.todolist.ui.screen
+package com.example.todolist.view.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.ToDoScreen
-import com.example.todolist.ui.components.ToDoListView
-import com.example.todolist.ui.theme.ToDoListTheme
+import com.example.todolist.view.components.ToDoListView
+import com.example.todolist.view.theme.ToDoListTheme
 
 @Composable
 fun ToDoListScreen(

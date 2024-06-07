@@ -1,4 +1,4 @@
-package com.example.todolist.ui.components
+package com.example.todolist.view.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn

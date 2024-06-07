@@ -1,4 +1,4 @@
-package com.example.todolist.ui.components
+package com.example.todolist.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
