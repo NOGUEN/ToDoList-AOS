@@ -1,6 +1,11 @@
+import com.google.protobuf.gradle.id
+import org.gradle.internal.impldep.junit.runner.Version.id
+import java.util.random.RandomGeneratorFactory.all
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.protobuf") version "0.9.4"
 }
 
 android {
@@ -59,6 +64,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material")
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("com.google.protobuf:protobuf-javalite:3.21.11")
+    implementation("com.google.protobuf:protobuf-kotlin-lite:3.21.11")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -66,4 +74,31 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.24.1"
+    }
+    // Generates the java Protobuf-lite code for the Protobufs in this project. See
+    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
+    // for more information.
+    generateProtoTasks {
+        // see https://github.com/google/protobuf-gradle-plugin/issues/518
+        // see https://github.com/google/protobuf-gradle-plugin/issues/491
+        // all() here because of android multi-variant
+        all().forEach { task ->
+            // this only works on version 3.8+ that has buildins for javalite / kotlin lite
+            // with previous version the java build in is to be removed and a new plugin
+            // need to be declared
+            task.builtins {
+                id("java") { // id is imported above
+                    option("lite")
+                }
+                id("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
