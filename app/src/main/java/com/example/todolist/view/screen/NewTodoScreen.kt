@@ -15,24 +15,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.view.components.InputTextField
 import com.example.todolist.view.theme.ToDoListTheme
+import com.example.todolist.viewmodel.NewTodoViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewTodoScreen(
     navController: NavHostController,
+    viewModel: NewTodoViewModel = hiltViewModel()
 ) {
-    val text = remember {
-        mutableStateOf("")
-    }
-
     ToDoListTheme {
         Scaffold(
             topBar = {
@@ -58,16 +55,16 @@ fun NewTodoScreen(
 
                     ) {
                         InputTextField(
-                            text = text.value,
+                            text = viewModel.titleText.value,
                             onTextChanged = {
-                                text.value = it
+                                viewModel.titleText.value = it
                             }
                         )
                         Box(modifier = Modifier.height(height = 10.dp))
                         InputTextField(
-                            text = text.value,
+                            text = viewModel.descriptionText.value,
                             onTextChanged = {
-                                text.value = it
+                                viewModel.descriptionText.value = it
                             },
                             height = 200.dp
                         )
