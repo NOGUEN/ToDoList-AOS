@@ -1,5 +1,6 @@
 package com.example.todolist
 
+import ToDoSerializer
 import android.app.Application
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.navigation.compose.rememberNavController
 import com.example.todolist.view.theme.ToDoListTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,3 +39,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+val android.content.Context.todoDataStore: DataStore<TodoProto.ToDo> by dataStore(
+    fileName = "Todo.proto",
+    serializer = ToDoSerializer
+)
