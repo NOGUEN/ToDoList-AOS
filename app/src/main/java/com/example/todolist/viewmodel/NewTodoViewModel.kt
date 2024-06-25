@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todolist.TodoProto
 import com.example.todolist.model.Todo
 import com.example.todolist.repository.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,16 +22,16 @@ class NewTodoViewModel @Inject constructor(
     val status: MutableState<String> = mutableStateOf("")
 
     fun saveToDo() {
-        val newToDo = Todo(
-            title = titleText.value,
-            description = descriptionText.value,
-            dueDate = dueDate.value,
-            duration = duration.value,
-            status = status.value
-        )
-        // 코루틴 작업을 위한 viewModelScope
+        val newToDo = TodoProto.ToDo.newBuilder()
+            .setTitle(titleText.value)
+            .setDescription(descriptionText.value)
+            .setDueDate(dueDate.value)
+            .setDuration(duration.value)
+            .setStatus(status.value)
+            .build()
+
         viewModelScope.launch {
-            repository.saveTodo(newToDo)
+            repository.saveToDo(newToDo)
         }
     }
 }

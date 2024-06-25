@@ -14,15 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.TodoScreen
 import com.example.todolist.view.components.TodoListView
 import com.example.todolist.view.theme.ToDoListTheme
+import com.example.todolist.viewmodel.NewTodoViewModel
+import com.example.todolist.viewmodel.TodoListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(
     navController: NavHostController,
+    viewModel: TodoListViewModel = hiltViewModel()
 ) {
     ToDoListTheme {
         Scaffold(
