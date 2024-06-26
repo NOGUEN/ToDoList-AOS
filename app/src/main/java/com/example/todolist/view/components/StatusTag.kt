@@ -11,6 +11,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.todolist.model.enums.Status
+import com.example.todolist.view.theme.DoneColor
+import com.example.todolist.view.theme.OnGoingColor
+import com.example.todolist.view.theme.ReadyColor
 
 
 @Composable
@@ -20,9 +23,9 @@ fun StatusTag(
     var backgroundColor : Color = Color.Gray
 
     when (statusString) {
-        Status.Ready.name -> backgroundColor = Color(0xFFD3E5FF)
-        Status.OnGoing.name -> backgroundColor = Color.Yellow
-        Status.Done.name -> backgroundColor = Color.Green
+        Status.Ready.name -> backgroundColor = ReadyColor
+        Status.OnGoing.name -> backgroundColor = OnGoingColor
+        Status.Done.name -> backgroundColor = DoneColor
     }
     Box(
         modifier = Modifier

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -19,12 +20,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.todolist.model.enums.Status
 import com.example.todolist.view.components.InputTextField
+import com.example.todolist.view.components.StatusButton
 import com.example.todolist.view.components.TodoButton
 import com.example.todolist.view.theme.BackgroundColor
 import com.example.todolist.view.theme.Primary
@@ -88,7 +92,33 @@ fun NewTodoScreen(
                             height = 200.dp,
                             hintText = "새 할 일 설명"
                         )
-
+                        Box(modifier = Modifier.height(height = 10.dp))
+                        Row() {
+                            StatusButton(
+                                text = Status.Ready.name,
+                                backgroundColor = viewModel.statusColor[0].value,
+                                textColor = Color.Black,
+                                onTapFunction = {
+                                    viewModel.tapStatus(0)
+                                }
+                            )
+                            StatusButton(
+                                text = Status.OnGoing.name,
+                                backgroundColor = viewModel.statusColor[1].value,
+                                textColor = Color.Black,
+                                onTapFunction = {
+                                    viewModel.tapStatus(1)
+                                }
+                            )
+                            StatusButton(
+                                text = Status.Done.name,
+                                backgroundColor = viewModel.statusColor[2].value,
+                                textColor = Color.Black,
+                                onTapFunction = {
+                                    viewModel.tapStatus(2)
+                                }
+                            )
+                        }
                     }
                 }
             },
