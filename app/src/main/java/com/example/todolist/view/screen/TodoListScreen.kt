@@ -12,12 +12,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.TodoScreen
 import com.example.todolist.view.components.TodoListView
+import com.example.todolist.view.theme.BackgroundColor
+import com.example.todolist.view.theme.Primary
+import com.example.todolist.view.theme.SecondaryBackgroundColor
 import com.example.todolist.view.theme.ToDoListTheme
 import com.example.todolist.viewmodel.TodoListViewModel
 
@@ -29,8 +33,13 @@ fun TodoListScreen(
 ) {
     ToDoListTheme {
         Scaffold(
+            containerColor = BackgroundColor,
             topBar = {
                 TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = BackgroundColor,
+                        titleContentColor = Primary,
+                    ),
                     title = { Text(text = "${viewModel.todoList.size}") }
                 )
             },
@@ -40,11 +49,15 @@ fun TodoListScreen(
                 }
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    navController.navigate(TodoScreen.NewTodo.name)
-                }) {
+                FloatingActionButton(
+                    containerColor = SecondaryBackgroundColor,
+                    onClick = {
+                        navController.navigate(TodoScreen.NewTodo.name)
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
+                        tint = Primary,
                         contentDescription = null
                     )
                 }

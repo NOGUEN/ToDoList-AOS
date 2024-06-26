@@ -11,21 +11,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.todolist.model.enums.Status
 import com.example.todolist.model.enums.TodoScreen
 import com.example.todolist.todo.TodoProto
+import com.example.todolist.view.theme.SecondaryBackgroundColor
 
 @Composable
 fun TodoListCell(
     cornerRadius: Dp = 12.dp,
-    backgroundColor: Color = Color.White,
     toDo: TodoProto.Todo,
     navController: NavController,
 ) {
@@ -41,41 +38,15 @@ fun TodoListCell(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(4.dp, shape = RoundedCornerShape(cornerRadius))
-                .background(backgroundColor)
+                .background(SecondaryBackgroundColor, shape = RoundedCornerShape(cornerRadius))
         ) {
             Column(
                 Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
             ) {
-                Text(text = toDo.title, fontSize = 16.sp)
+                Text(text = toDo.title, fontSize = 16.sp, color = Color.White)
                 Box(modifier = Modifier.size(width = 0.dp, height = 10.dp))
                 StatusTag(statusString = toDo.status)
             }
-        }
-    }
-}
-
-@Composable
-fun StatusTag(
-    statusString: String,
-) {
-    var backgroundColor : Color = Color.Gray
-
-    when (statusString) {
-        Status.Ready.name -> backgroundColor = Color(0xFFD3E5FF)
-        Status.OnGoing.name -> backgroundColor = Color.Yellow
-        Status.Done.name -> backgroundColor = Color.Green
-    }
-    Box(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(4.dp))
-            .background(color = backgroundColor)
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(horizontal = 5.dp, vertical = 2.dp)
-        ) {
-            Text(text = statusString)
         }
     }
 }

@@ -2,14 +2,12 @@ package com.example.todolist.view.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,14 +15,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.view.components.InputTextField
+import com.example.todolist.view.components.TodoButton
+import com.example.todolist.view.theme.BackgroundColor
+import com.example.todolist.view.theme.Primary
 import com.example.todolist.view.theme.ToDoListTheme
 import com.example.todolist.viewmodel.NewTodoViewModel
 
@@ -35,10 +38,18 @@ fun NewTodoScreen(
     navController: NavHostController,
     viewModel: NewTodoViewModel = hiltViewModel()
 ) {
+    val focusManager = LocalFocusManager.current
+
     ToDoListTheme {
         Scaffold(
+            modifier = Modifier.addFocusCleaner(focusManager),
+            containerColor = BackgroundColor,
             topBar = {
                 TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = BackgroundColor,
+                        titleContentColor = Primary,
+                    ),
                     title = { Text(text = "NewToDoList") },
                     navigationIcon = {
                         Box(modifier = Modifier.clickable {
@@ -46,6 +57,7 @@ fun NewTodoScreen(
                         })
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
+                            tint = Primary,
                             contentDescription = null
                         )
                     }
@@ -63,7 +75,9 @@ fun NewTodoScreen(
                             text = viewModel.titleText.value,
                             onTextChanged = {
                                 viewModel.titleText.value = it
-                            }
+                            },
+                            height = 60.dp,
+                            hintText = "새 할 일 제목"
                         )
                         Box(modifier = Modifier.height(height = 10.dp))
                         InputTextField(
@@ -71,7 +85,8 @@ fun NewTodoScreen(
                             onTextChanged = {
                                 viewModel.descriptionText.value = it
                             },
-                            height = 200.dp
+                            height = 200.dp,
+                            hintText = "새 할 일 설명"
                         )
 
                     }
@@ -79,20 +94,26 @@ fun NewTodoScreen(
             },
             bottomBar = {
                 Box(modifier = Modifier
-                    .padding(
-                        horizontal = 20.dp, vertical = 10.dp
-                    )
-                    .fillMaxWidth()
-                    .height(height = 50.dp)
-                    .clickable {
-                        viewModel.addToDo()
-                    }
-                    .background(color = Color(0xFFD3E5FF), shape = RoundedCornerShape(12.dp))
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
                 ) {
-                    Text(modifier = Modifier.align(Alignment.Center),
-                        text = "저장")
+                    TodoButton(
+                        50.dp,
+                        Primary,
+                        onTap = {
+                            viewModel.addToDo()
+                        }
+                    )
                 }
             }
         )
+    }
+}
+
+fun Modifier.addFocusCleaner(focusManager: FocusManager, doOnClear: () -> Unit = {}): Modifier {
+    return this.pointerInput(Unit) {
+        detectTapGestures(onTap = {
+            doOnClear()
+            focusManager.clearFocus()
+        })
     }
 }
