@@ -1,5 +1,5 @@
-package com.example.todolist.model
-
-class TodoCollection {
-    val todos = mutableListOf<Todo>()
-}
+//package com.example.todolist.model
+//
+//class TodoCollection {
+//    val todos = mutableListOf<Todo>()
+//}

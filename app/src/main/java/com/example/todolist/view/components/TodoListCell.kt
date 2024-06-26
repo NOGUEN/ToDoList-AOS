@@ -18,15 +18,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.todolist.model.Todo
 import com.example.todolist.model.enums.Status
 import com.example.todolist.model.enums.TodoScreen
+import com.example.todolist.todo.TodoProto
 
 @Composable
 fun TodoListCell(
     cornerRadius: Dp = 12.dp,
     backgroundColor: Color = Color.White,
-    toDo: Todo,
+    toDo: TodoProto.Todo,
     navController: NavController,
 ) {
     Box(

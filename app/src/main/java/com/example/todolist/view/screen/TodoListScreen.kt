@@ -19,7 +19,6 @@ import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.TodoScreen
 import com.example.todolist.view.components.TodoListView
 import com.example.todolist.view.theme.ToDoListTheme
-import com.example.todolist.viewmodel.NewTodoViewModel
 import com.example.todolist.viewmodel.TodoListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,12 +31,12 @@ fun TodoListScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = "ToDoList") }
+                    title = { Text(text = "${viewModel.todoList.size}") }
                 )
             },
             content = {
                 Box(modifier = Modifier.padding(it)) {
-                    TodoListView(navController)
+                    TodoListView(navController, viewModel.todoList)
                 }
             },
             floatingActionButton = {

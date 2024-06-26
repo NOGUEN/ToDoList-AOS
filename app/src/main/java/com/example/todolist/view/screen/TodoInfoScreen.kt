@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.todolist.model.Todo
+import com.example.todolist.todo.TodoProto
 import com.example.todolist.view.theme.ToDoListTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoInfoScreen(
     navController: NavHostController,
-    toDo: Todo,
+    toDo: TodoProto.Todo,
 ) {
     ToDoListTheme {
         Scaffold(
@@ -45,7 +45,6 @@ fun TodoInfoScreen(
                     Column(modifier = Modifier
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                     ) {
-
                         Text(text = toDo.description)
                         Text(text = toDo.status)
                         Text(text = "${toDo.duration}")

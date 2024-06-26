@@ -1,54 +1,62 @@
 package com.example.todolist.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.todolist.TodoProto
-import com.example.todolist.model.Todo
-import com.example.todolist.todoDataStore
+import com.example.todolist.todo.TodoProto
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import todoDataStore
+import javax.inject.Inject
 
 class TodoRepository @Inject constructor(
-    private val context: Context,
+    private val context: Context
 ) {
+    val todoDataStore = context.todoDataStore
 
-    private val _todoList = MutableLiveData<List<Todo>>()
-    val todoList: LiveData<List<Todo>> = _todoList
-
-
-    fun readToDoFlow(): Flow<TodoProto.ToDo> {
-        return context.todoDataStore.data
+    fun readTodos(): Flow<TodoProto.TodoList> {
+        return todoDataStore.data
     }
 
-    fun saveToDo(toDo: TodoProto.ToDo) {
+    fun addTodo(todo: TodoProto.Todo) {
         runBlocking {
-            context.todoDataStore.updateData { currentToDo ->
-                currentToDo.toBuilder()
-                    .setTitle(toDo.title)
-                    .setDescription(toDo.description)
-                    .setDueDate(toDo.dueDate)
-                    .setDuration(toDo.duration)
-                    .setStatus(toDo.status)
+            todoDataStore.updateData { currentTodos ->
+                currentTodos.toBuilder()
+                    .addTodos(todo)
                     .build()
             }
         }
     }
 
-    fun updateToDoStatus(newStatus: String) {
+    fun updateTodoStatus(index: Int, newStatus: String) {
         runBlocking {
-            context.todoDataStore.updateData { currentToDo ->
-                currentToDo.toBuilder()
-                    .setStatus(newStatus)
-                    .build()
+            todoDataStore.updateData { currentTodos ->
+                val todosBuilder = currentTodos.toBuilder()
+                if (index >= 0 && index < todosBuilder.todosCount) {
+                    val updatedTodo = todosBuilder.getTodos(index).toBuilder()
+                        .setStatus(newStatus)
+                        .build()
+                    todosBuilder.setTodos(index, updatedTodo)
+                }
+                todosBuilder.build()
             }
         }
     }
 
+    fun deleteTodoAtIndex(index: Int) {
+        runBlocking {
+            todoDataStore.updateData { currentTodos ->
+                val todosBuilder = currentTodos.toBuilder()
+                if (index >= 0 && index < todosBuilder.todosCount) {
+                    todosBuilder.removeTodos(index)
+                }
+                todosBuilder.build()
+            }
+        }
+    }
 
-
-    suspend fun deleteTodoAtIndex(index: Int) {
-
+    fun getTodoList(): List<TodoProto.Todo> {
+        return runBlocking {
+            todoDataStore.data.first().todosList
+        }
     }
 }

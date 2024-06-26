@@ -2,30 +2,24 @@ package com.example.todolist.view.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.todolist.model.Todo
-import com.example.todolist.model.enums.Status
-import java.util.Date
+import com.example.todolist.todo.TodoProto
 
 @Composable
 fun TodoListView(
-    navController: NavController
+    navController: NavController,
+    todo: MutableList<TodoProto.Todo>
 ) {
     LazyColumn (
         modifier = Modifier.padding(horizontal = 10.dp)
     ) {
-        items(count = 20) {
+        items(todo) { todoItem ->
             TodoListCell(
-                toDo = Todo(
-                    title = "고라니 밥주기",
-                    description = "고라니 밥을 줍시당",
-                    dueDate = Date(10).time,
-                    duration = 100,
-                    status = Status.Ready.name
-                ),
+                toDo = todoItem,
                 navController = navController)
         }
     }
