@@ -29,27 +29,27 @@ fun TodoNavHost(
     ) {
         composable(TodoScreen.TodoList.name) { TodoListScreen(navController = navController) }
         composable(
-            route = "${TodoScreen.TodoInfo.name}/{uuid}/{title}/{description}/{dueDate}/{status}",
+            route = "${TodoScreen.TodoInfo.name}/{uuid}/{title}/{duration}/{status}/{description}",
             arguments = listOf(
                 navArgument("uuid") {type = NavType.StringType},
                 navArgument("title") { type = NavType.StringType },
-                navArgument("description") { type = NavType.StringType },
-                navArgument("dueDate") { type = NavType.LongType },
-                navArgument("status") { type = NavType.StringType }
+                navArgument("duration") { type = NavType.IntType },
+                navArgument("status") { type = NavType.StringType },
+                navArgument("description") { type = NavType.StringType }
             )
         ) {
                 backStackEntry ->
             val uuid = backStackEntry.arguments?.getString("uuid") ?: ""
             val title = backStackEntry.arguments?.getString("title") ?: ""
-            val description = backStackEntry.arguments?.getString("description") ?: ""
-            val dueDate = backStackEntry.arguments?.getLong("dueDate") ?: 0L
+            val duration = backStackEntry.arguments?.getInt("duration") ?: 0
             val status = backStackEntry.arguments?.getString("status") ?: ""
+            val description = backStackEntry.arguments?.getString("description") ?: ""
 
             val toDo = TodoProto.Todo.newBuilder()
                 .setUuid(uuid)
                 .setTitle(title)
                 .setDescription(description)
-                .setDueDate(dueDate)
+                .setDuration(duration)
                 .setStatus(status)
                 .build()
             TodoInfoScreen(navController = navController, toDo = toDo) }

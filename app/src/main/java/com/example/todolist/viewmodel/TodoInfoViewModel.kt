@@ -1,15 +1,11 @@
 package com.example.todolist.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.todolist.model.enums.Status
 import com.example.todolist.repository.TodoRepository
-import com.example.todolist.todo.TodoProto
 import com.example.todolist.view.theme.DisabledDoneColor
 import com.example.todolist.view.theme.DisabledOnGoingColor
 import com.example.todolist.view.theme.DisabledReadyColor
@@ -17,35 +13,43 @@ import com.example.todolist.view.theme.DoneColor
 import com.example.todolist.view.theme.OnGoingColor
 import com.example.todolist.view.theme.ReadyColor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class NewTodoViewModel @Inject constructor(
+class TodoInfoViewModel @Inject constructor(
     private val repository: TodoRepository
 ) : ViewModel() {
-    val titleText: MutableState<String> = mutableStateOf("")
-    val descriptionText: MutableState<String> = mutableStateOf("")
-    val duration: MutableState<Int> = mutableStateOf(0)
     val status: MutableState<String> = mutableStateOf("Ready")
     val tapped: MutableList<Boolean> = mutableListOf(true, false, false)
-    val statusColor: MutableList<MutableState<Color>> = mutableListOf(mutableStateOf(ReadyColor), mutableStateOf(
-        DisabledOnGoingColor), mutableStateOf(DisabledDoneColor))
-    var submitAvailability: MutableState<Boolean> = mutableStateOf(false)
+    val statusColor: MutableList<MutableState<Color>> = mutableListOf(
+        mutableStateOf(ReadyColor), mutableStateOf(
+        DisabledOnGoingColor
+        ), mutableStateOf(DisabledDoneColor)
+    )
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun addToDo() {
-        val newToDo = TodoProto.Todo.newBuilder()
-            .setUuid(UUID.randomUUID().toString())
-            .setTitle(titleText.value)
-            .setDescription(descriptionText.value)
-            .setDuration(duration.value)
-            .setStatus(status.value)
-            .build()
+    fun setStatus(toDoStatus: String) {
+        for (idx in tapped.indices) {
+            tapped[idx] = false
+        }
+        statusColor[0].value = DisabledReadyColor
+        statusColor[1].value = DisabledOnGoingColor
+        statusColor[2].value = DisabledDoneColor
 
-        viewModelScope.launch {
-            repository.addTodo(newToDo)
+        status.value = toDoStatus
+        when (toDoStatus) {
+            Status.Ready.name -> {
+                tapped[0] = true
+                statusColor[0].value = ReadyColor
+            }
+            Status.OnGoing.name -> {
+                tapped[1] = true
+                statusColor[1].value = OnGoingColor
+
+            }
+            Status.Done.name -> {
+                tapped[2] = true
+                statusColor[2].value = DoneColor
+            }
         }
     }
 

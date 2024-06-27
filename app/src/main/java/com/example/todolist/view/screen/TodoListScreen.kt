@@ -45,7 +45,9 @@ fun TodoListScreen(
             },
             content = {
                 Box(modifier = Modifier.padding(it)) {
-                    TodoListView(navController, viewModel.todoList)
+                    TodoListView(navController, viewModel.todoList) {
+                        viewModel.deleteTodoByUuid(it)
+                    }
                 }
             },
             floatingActionButton = {

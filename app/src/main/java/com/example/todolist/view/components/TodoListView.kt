@@ -12,7 +12,8 @@ import com.example.todolist.todo.TodoProto
 @Composable
 fun TodoListView(
     navController: NavController,
-    todo: MutableList<TodoProto.Todo>
+    todo: MutableList<TodoProto.Todo>,
+    deleteFunction: (String) -> Unit
 ) {
     LazyColumn (
         modifier = Modifier.padding(horizontal = 10.dp)
@@ -20,7 +21,9 @@ fun TodoListView(
         items(todo) { todoItem ->
             TodoListCell(
                 toDo = todoItem,
-                navController = navController)
+                navController = navController,
+                deleteFunction = deleteFunction
+            )
         }
     }
 }

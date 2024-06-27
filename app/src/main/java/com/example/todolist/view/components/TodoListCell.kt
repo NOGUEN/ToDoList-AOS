@@ -27,13 +27,19 @@ fun TodoListCell(
     cornerRadius: Dp = 12.dp,
     toDo: TodoProto.Todo,
     navController: NavController,
+    deleteFunction: (String) -> Unit
 ) {
     Box(
         modifier = Modifier
             .padding(top = 10.dp)
             .clickable {
+                var descriptionPath = "EmptyDescriptionTag"
+
+                if (toDo.description.isNotBlank())
+                    descriptionPath = toDo.description
+
                 navController.navigate(
-                    "${TodoScreen.TodoInfo.name}/${toDo.uuid}/${toDo.title}/${toDo.description}/${toDo.dueDate}/${toDo.status}"
+                    "${TodoScreen.TodoInfo.name}/${toDo.uuid}/${toDo.title}/${toDo.duration}/${toDo.status}/${descriptionPath}"
                 )
             }
     ) {
@@ -64,7 +70,7 @@ fun TodoListCell(
                 ) {
                     DeleteMenuButton(
                         onDeleteFunction = {
-
+                            deleteFunction(toDo.uuid)
                         }
                     )
                 }

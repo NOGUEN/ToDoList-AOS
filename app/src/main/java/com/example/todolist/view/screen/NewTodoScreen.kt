@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.Status
@@ -79,6 +81,7 @@ fun NewTodoScreen(
                             text = viewModel.titleText.value,
                             onTextChanged = {
                                 viewModel.titleText.value = it
+                                viewModel.submitAvailability.value = !it.isBlank()
                             },
                             height = 60.dp,
                             hintText = "새 할 일 제목"
@@ -92,7 +95,9 @@ fun NewTodoScreen(
                             height = 200.dp,
                             hintText = "새 할 일 설명"
                         )
-                        Box(modifier = Modifier.height(height = 10.dp))
+                        Box(modifier = Modifier.height(height = 20.dp))
+                        Text("상태", color = Color.White, fontSize = 20.sp)
+                        Box(modifier = Modifier.height(10.dp))
                         Row() {
                             StatusButton(
                                 text = Status.Ready.name,
@@ -102,6 +107,7 @@ fun NewTodoScreen(
                                     viewModel.tapStatus(0)
                                 }
                             )
+                            Box(modifier = Modifier.width(10.dp))
                             StatusButton(
                                 text = Status.OnGoing.name,
                                 backgroundColor = viewModel.statusColor[1].value,
@@ -110,6 +116,7 @@ fun NewTodoScreen(
                                     viewModel.tapStatus(1)
                                 }
                             )
+                            Box(modifier = Modifier.width(10.dp))
                             StatusButton(
                                 text = Status.Done.name,
                                 backgroundColor = viewModel.statusColor[2].value,
@@ -119,6 +126,9 @@ fun NewTodoScreen(
                                 }
                             )
                         }
+                        Box(modifier = Modifier.height(height = 20.dp))
+                        Text("자동 완료 시간", color = Color.White, fontSize = 20.sp)
+                        Box(modifier = Modifier.height(10.dp))
                     }
                 }
             },
@@ -130,8 +140,11 @@ fun NewTodoScreen(
                         50.dp,
                         Primary,
                         onTap = {
-                            viewModel.addToDo()
-                        }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                viewModel.addToDo()
+                            }
+                        },
+                        available = viewModel.submitAvailability.value
                     )
                 }
             }

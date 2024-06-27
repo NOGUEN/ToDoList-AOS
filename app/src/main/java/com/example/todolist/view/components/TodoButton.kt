@@ -13,21 +13,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.todolist.view.theme.SecondaryBackgroundColor
 
 @Composable
 fun TodoButton(
-    height: Dp,
-    color: Color,
-    onTap: () -> Unit,
-
+        height: Dp,
+        color: Color,
+        onTap: () -> Unit,
+        available: Boolean
     ) {
+    var onTapFunction: () -> Unit = {}
+    var buttonColor: Color = SecondaryBackgroundColor
+
+    if (available) {
+        onTapFunction = onTap
+        buttonColor = color
+    } else {
+        onTapFunction = {}
+        buttonColor = SecondaryBackgroundColor
+    }
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(height = height)
         .clickable {
-            onTap()
+            onTapFunction()
         }
-        .background(color = color, shape = RoundedCornerShape(12.dp)),
+        .background(color = buttonColor, shape = RoundedCornerShape(12.dp)),
     ) {
         Text(modifier = Modifier.align(Alignment.Center),
             text = "저장")

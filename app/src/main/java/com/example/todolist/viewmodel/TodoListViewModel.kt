@@ -23,4 +23,8 @@ class TodoListViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteTodoByUuid(uuid: String) {
+        repository.deleteTodoByUuid(uuid)
+    }
 }
