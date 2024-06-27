@@ -59,9 +59,11 @@ class NewTodoViewModel @Inject constructor(
 
         viewModelScope.launch {
             repository.addTodo(newToDo)
-            workManager.setAlarm(durationHour.value.toLong() * 60 + durationMinute.value.toLong())
-            workManager.scheduleStatusChange(durationHour.value.toLong() * 60 + durationMinute.value.toLong()) {
-                repository.updateTodoStatus(uuid, doneToDo)
+            if (durationHour.value.toLong() * 60 + durationMinute.value.toLong() != 0L) {
+                workManager.setAlarm(durationHour.value.toLong() * 60 + durationMinute.value.toLong())
+                workManager.scheduleStatusChange(durationHour.value.toLong() * 60 + durationMinute.value.toLong()) {
+                    repository.updateTodoStatus(uuid, doneToDo)
+                }
             }
         }
     }
