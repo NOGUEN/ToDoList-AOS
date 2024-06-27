@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.todolist.model.enums.Status
 import com.example.todolist.repository.TodoRepository
+import com.example.todolist.todo.TodoProto
 import com.example.todolist.view.theme.DisabledDoneColor
 import com.example.todolist.view.theme.DisabledOnGoingColor
 import com.example.todolist.view.theme.DisabledReadyColor
@@ -34,8 +35,8 @@ class TodoInfoViewModel @Inject constructor(
         statusColor[0].value = DisabledReadyColor
         statusColor[1].value = DisabledOnGoingColor
         statusColor[2].value = DisabledDoneColor
-
         status.value = toDoStatus
+
         when (toDoStatus) {
             Status.Ready.name -> {
                 tapped[0] = true
@@ -44,7 +45,6 @@ class TodoInfoViewModel @Inject constructor(
             Status.OnGoing.name -> {
                 tapped[1] = true
                 statusColor[1].value = OnGoingColor
-
             }
             Status.Done.name -> {
                 tapped[2] = true
@@ -53,7 +53,9 @@ class TodoInfoViewModel @Inject constructor(
         }
     }
 
-    fun tapStatus(index: Int) {
+    fun tapStatus(index: Int, currentTodo: TodoProto.Todo) {
+        val statusList = listOf(Status.Ready.name, Status.OnGoing.name, Status.Done.name)
+
         for (idx in tapped.indices) {
             tapped[idx] = false
         }
@@ -61,19 +63,30 @@ class TodoInfoViewModel @Inject constructor(
         statusColor[1].value = DisabledOnGoingColor
         statusColor[2].value = DisabledDoneColor
 
+        val updatedTodo = TodoProto.Todo.newBuilder()
+            .setUuid(currentTodo.uuid)
+            .setTitle(currentTodo.title)
+            .setDescription(currentTodo.description)
+            .setDuration(currentTodo.duration)
+            .setStatus(statusList[index])
+            .build()
+
         tapped[index] = true
         when (index) {
             0 -> {
                 status.value = Status.Ready.name
                 statusColor[0].value = ReadyColor
+                repository.updateTodoStatus(currentTodo.uuid, updatedTodo)
             }
             1 -> {
                 status.value = Status.OnGoing.name
                 statusColor[1].value = OnGoingColor
+                repository.updateTodoStatus(currentTodo.uuid, updatedTodo)
             }
             2 -> {
                 status.value = Status.Done.name
                 statusColor[2].value = DoneColor
+                repository.updateTodoStatus(currentTodo.uuid, updatedTodo)
             }
         }
     }

@@ -24,29 +24,6 @@ fun InputTextField(
     height: Dp = 50.dp,
     hintText: String
 ) {
-//    BasicTextField(
-//        value = text,
-//        onValueChange = onTextChanged,
-//        textStyle = LocalTextStyle.current.copy(
-//            textAlign = TextAlign.Left,
-//            fontSize = 20.sp
-//        ),
-//        modifier = Modifier
-//            .background(color = Color.White, shape = RoundedCornerShape(12.dp))
-//            .border(
-//                BorderStroke(width = 1.dp, color = Color.Gray),
-//                shape = RoundedCornerShape(12.dp)
-//            )
-//            .height(height = height)
-//            .fillMaxWidth(),
-//        decorationBox = { innerTextField ->
-//            Box(modifier = Modifier
-//                .padding(vertical = 10.dp, horizontal = 10.dp)
-//            ) {
-//                innerTextField()
-//            }
-//        }
-//    )
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth()
             .height(height = height),
@@ -61,5 +38,4 @@ fun InputTextField(
         ),
         placeholder = {Text(hintText, color = Color.Gray)},
     )
-
 }

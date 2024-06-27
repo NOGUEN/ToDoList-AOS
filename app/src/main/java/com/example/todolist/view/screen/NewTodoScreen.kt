@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
@@ -30,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.todolist.model.enums.Status
 import com.example.todolist.view.components.InputTextField
+import com.example.todolist.view.components.NumberTextField
 import com.example.todolist.view.components.StatusButton
 import com.example.todolist.view.components.TodoButton
 import com.example.todolist.view.theme.BackgroundColor
@@ -129,6 +132,38 @@ fun NewTodoScreen(
                         Box(modifier = Modifier.height(height = 20.dp))
                         Text("자동 완료 시간", color = Color.White, fontSize = 20.sp)
                         Box(modifier = Modifier.height(10.dp))
+                        Row(
+                            modifier = Modifier,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            NumberTextField(
+                                height = 70.dp,
+                                text = viewModel.durationHour.value,
+                                onTextChanged = {
+                                    viewModel.durationHour.value = it
+                                    viewModel.submitAvailability.value = !it.isBlank()
+                                },
+                                range = 0..24,
+                                hintText = "시간",
+                            )
+                            Box(
+                                modifier = Modifier.width(20.dp)
+                            ) {
+                                Text(" : ", color = Color.White, fontSize = 20.sp)
+                            }
+                            NumberTextField(
+                                height = 70.dp,
+                                text = viewModel.durationMinute.value,
+                                onTextChanged = {
+                                    viewModel.durationMinute.value = it
+                                    viewModel.submitAvailability.value = !it.isBlank()
+                                },
+                                range = 0..60,
+                                hintText = "분"
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
                     }
                 }
             },
@@ -142,6 +177,7 @@ fun NewTodoScreen(
                         onTap = {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 viewModel.addToDo()
+                                navController.popBackStack()
                             }
                         },
                         available = viewModel.submitAvailability.value

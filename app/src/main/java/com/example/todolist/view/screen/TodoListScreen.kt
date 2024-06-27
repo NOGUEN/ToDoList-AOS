@@ -52,14 +52,14 @@ fun TodoListScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    containerColor = SecondaryBackgroundColor,
+                    containerColor = Primary ,
                     onClick = {
                         navController.navigate(TodoScreen.NewTodo.name)
                     }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        tint = Primary,
+                        tint = SecondaryBackgroundColor,
                         contentDescription = null
                     )
                 }

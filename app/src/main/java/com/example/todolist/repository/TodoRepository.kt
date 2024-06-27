@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.todolist.AlarmReceiver
 import com.example.todolist.todo.TodoProto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import todoDataStore
 import javax.inject.Inject
@@ -31,7 +34,6 @@ class TodoRepository @Inject constructor(
                     .addTodos(todo)
                     .build()
             }
-            setAlarm(1)
         }
     }
 
@@ -43,26 +45,41 @@ class TodoRepository @Inject constructor(
         }
     }
 
-    fun updateTodoStatus(index: Int, newStatus: String) {
-        runBlocking {
-            todoDataStore.updateData { currentTodos ->
-                val todosBuilder = currentTodos.toBuilder()
-                if (index >= 0 && index < todosBuilder.todosCount) {
-                    val updatedTodo = todosBuilder.getTodos(index).toBuilder()
-                        .setStatus(newStatus)
-                        .build()
-                    todosBuilder.setTodos(index, updatedTodo)
-                }
-                todosBuilder.build()
-            }
-        }
-    }
-
-    fun deleteTodoByUuid(uuid: String) {
+    fun updateTodoStatus(uuid: String, todo: TodoProto.Todo) {
         runBlocking {
             context.todoDataStore.updateData { toDoList ->
                 val updatedToDoList = toDoList.toBuilder()
                 val index = toDoList.todosList.indexOfFirst { it.uuid == uuid }
+                if (index != -1) {
+                    updatedToDoList.setTodos(index, todo)
+                }
+                updatedToDoList.build()
+            }
+        }
+    }
+
+    fun getTodoByUuid(uuid: String): TodoProto.Todo? = runBlocking {
+        var todo: TodoProto.Todo? = null
+
+        context.todoDataStore.updateData { toDoList ->
+            val updatedToDoList = toDoList.toBuilder()
+            val index = toDoList.todosList.indexOfFirst { it.uuid == uuid }
+            if (index != -1) {
+                todo = updatedToDoList.getTodos(index)
+            }
+            updatedToDoList.build()
+        }
+
+        return@runBlocking todo
+    }
+
+    fun deleteTodoByUuid(uuid: String) {
+        getTodoByUuid(uuid)
+        runBlocking {
+            context.todoDataStore.updateData { toDoList ->
+                val updatedToDoList = toDoList.toBuilder()
+                val index = toDoList.todosList.indexOfFirst { it.uuid == uuid }
+                Log.d("ffffff", "${index}")
                 if (index != -1) {
                     updatedToDoList.removeTodos(index)
                 }
@@ -78,14 +95,10 @@ class TodoRepository @Inject constructor(
         if (alarmManager.canScheduleExactAlarms()) {
             val intent = Intent(context, AlarmReceiver::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-
-            // 분 단위를 밀리초로 변환
             val timeInMillis = minutes * 60 * 1000
-            // 현재 시간에 입력된 시간을 더하여 알람 시간을 설정합니다.
             val triggerAtMillis = System.currentTimeMillis() + timeInMillis
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
         } else {
-            // 정확한 알람을 예약할 수 없는 경우 사용자에게 설정 화면으로 안내합니다.
             val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
             context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }

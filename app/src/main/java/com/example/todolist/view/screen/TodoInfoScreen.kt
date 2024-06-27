@@ -43,7 +43,6 @@ fun TodoInfoScreen(
     viewModel: TodoInfoViewModel = hiltViewModel()
 ) {
     viewModel.setStatus(toDo.status)
-
     ToDoListTheme {
         Scaffold(
             containerColor = BackgroundColor,
@@ -100,7 +99,7 @@ fun TodoInfoScreen(
                                 backgroundColor = viewModel.statusColor[0].value,
                                 textColor = Color.Black,
                                 onTapFunction = {
-                                    viewModel.tapStatus(0)
+                                    viewModel.tapStatus(0, toDo)
                                 }
                             )
                             Box(modifier = Modifier.width(10.dp))
@@ -109,7 +108,7 @@ fun TodoInfoScreen(
                                 backgroundColor = viewModel.statusColor[1].value,
                                 textColor = Color.Black,
                                 onTapFunction = {
-                                    viewModel.tapStatus(1)
+                                    viewModel.tapStatus(1, toDo)
                                 }
                             )
                             Box(modifier = Modifier.width(10.dp))
@@ -118,13 +117,10 @@ fun TodoInfoScreen(
                                 backgroundColor = viewModel.statusColor[2].value,
                                 textColor = Color.Black,
                                 onTapFunction = {
-                                    viewModel.tapStatus(2)
+                                    viewModel.tapStatus(2, toDo)
                                 }
                             )
                         }
-                        Box(modifier = Modifier.height(height = 20.dp))
-                        Text("설정된 타이머", color = Color.White, fontSize = 20.sp)
-                        Box(modifier = Modifier.height(10.dp))
                     }
                 }
             }

@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 
-class AlarmReceiver : BroadcastReceiver() {
+class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Toast.makeText(context, "알람이 울립니다!", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "작업 완료!", Toast.LENGTH_LONG).show()
         NotificationHelper.sendNotification(
             context,
-            "Todo Alarm",
-            "알람이 울립니다!"
+            "작업 완료 알람",
+            "작업 완료!"
         )
     }
 }
